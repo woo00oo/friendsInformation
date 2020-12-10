@@ -1,18 +1,18 @@
 package com.woo00oo.friendsInformation.domain;
 
 import com.sun.istack.NotNull;
+import com.woo00oo.friendsInformation.domain.dto.Birthday;
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Data
+@Builder
 public class Person {
 
     @Id
@@ -29,15 +29,19 @@ public class Person {
 
     @NotNull
     private String bloodType;
-
+    
     private String address;
 
-    private LocalDate birthday;
+    @Embedded
+    private Birthday birthday;
+
 
     private String job;
 
     @ToString.Exclude
     private String phoneNumber;
 
-    private boolean block;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Block block;
+
 }
